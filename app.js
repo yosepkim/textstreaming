@@ -1,6 +1,12 @@
 const express = require('express');
 const path = require('path');
+const https = require('https');
 const app = express();
+
+var privateKey  = fs.readFileSync('/etc/letsencrypt/live/edgecloud9.com/privkey.pem', 'utf8');
+var certificate = fs.readFileSync('/etc/letsencrypt/live/edgecloud9.com/fullchain.pem', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
 
 const sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -19,12 +25,10 @@ app.get('/stream', async (_req, res) => {
     const array = text.split(" ");
     for (let i = 0; i < array.length; i++) {
         res.write(`${array[i]} `);
-        await sleep(100); // Simulates a delay
+        await sleep(200); // Simulates a delay
     }
     res.end();
 });
 
-const port = 8080;
-app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-});
+const httpsServer = https.createServer(credentials, app);
+httpsServer.listen(443);
