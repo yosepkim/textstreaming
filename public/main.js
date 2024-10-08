@@ -27,28 +27,5 @@ for await (const chunk of response.body) {
 
     console.log(decodedChunk);
 
-    // Clean up the data
-    // const lines = decodedChunk
-    //     .split("\n")
-    //     .map((line) => line.replace("data: ", ""))
-    //     .filter((line) => line.length > 0)
-    //     .filter((line) => line !== "[DONE]")
-    //     .map((line) => JSON.parse(line));
-
     document.querySelector("#content").textContent += decodedChunk;
-
-    // Destructuring!
-    // for (const line of lines) {
-    //     const {
-    //         choices: [
-    //             {
-    //                 delta: { content },
-    //             },
-    //         ],
-    //     } = line;
-
-    //     if (content) {
-    //         document.querySelector("#content").textContent += content;
-    //     }
-    // }
 }
